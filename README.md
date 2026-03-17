@@ -1,5 +1,5 @@
 # tree-sitter-smarty
-
+This is for EC cube styled smarty.
 ## Usage
 First add parser:
 
