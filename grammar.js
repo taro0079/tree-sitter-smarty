@@ -45,10 +45,7 @@ module.exports = grammar({
     foreach: ($) =>
       seq(
         "<!--{foreach",
-        /\$[^\s]+/,
-        "as",
-        /\$[^\s=}]+/,
-        optional(seq("=>", /\$[^}]+/)),
+        field("parameters", alias(/[^}]+/, $.php)),
         "}-->",
         field("body", alias(repeat($._nested), $.body)),
         field("alternative", optional($.foreach_else)),

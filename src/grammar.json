@@ -189,37 +189,17 @@
           "value": "<!--{foreach"
         },
         {
-          "type": "PATTERN",
-          "value": "\\$[^\\s]+"
-        },
-        {
-          "type": "STRING",
-          "value": "as"
-        },
-        {
-          "type": "PATTERN",
-          "value": "\\$[^\\s=}]+"
-        },
-        {
-          "type": "CHOICE",
-          "members": [
-            {
-              "type": "SEQ",
-              "members": [
-                {
-                  "type": "STRING",
-                  "value": "=>"
-                },
-                {
-                  "type": "PATTERN",
-                  "value": "\\$[^}]+"
-                }
-              ]
+          "type": "FIELD",
+          "name": "parameters",
+          "content": {
+            "type": "ALIAS",
+            "content": {
+              "type": "PATTERN",
+              "value": "[^}]+"
             },
-            {
-              "type": "BLANK"
-            }
-          ]
+            "named": true,
+            "value": "php"
+          }
         },
         {
           "type": "STRING",

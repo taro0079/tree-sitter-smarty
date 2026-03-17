@@ -146,6 +146,16 @@
             "named": true
           }
         ]
+      },
+      "parameters": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "php",
+            "named": true
+          }
+        ]
       }
     }
   },
@@ -380,16 +390,8 @@
     "named": false
   },
   {
-    "type": "=>",
-    "named": false
-  },
-  {
     "type": "array_value",
     "named": true
-  },
-  {
-    "type": "as",
-    "named": false
   },
   {
     "type": "attribute_name",
