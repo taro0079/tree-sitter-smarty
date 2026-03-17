@@ -92,13 +92,13 @@
       "members": [
         {
           "type": "STRING",
-          "value": "{"
+          "value": "<!--{"
         },
         {
           "type": "ALIAS",
           "content": {
-            "type": "SYMBOL",
-            "name": "text"
+            "type": "PATTERN",
+            "value": "[^}|]+"
           },
           "named": true,
           "value": "php"
@@ -121,7 +121,7 @@
         },
         {
           "type": "STRING",
-          "value": "}"
+          "value": "}-->"
         }
       ]
     },
@@ -186,7 +186,7 @@
       "members": [
         {
           "type": "STRING",
-          "value": "{foreach"
+          "value": "<!--{foreach"
         },
         {
           "type": "PATTERN",
@@ -223,7 +223,7 @@
         },
         {
           "type": "STRING",
-          "value": "}"
+          "value": "}-->"
         },
         {
           "type": "FIELD",
@@ -259,7 +259,7 @@
         },
         {
           "type": "STRING",
-          "value": "{/foreach}"
+          "value": "<!--{/foreach}-->"
         }
       ]
     },
@@ -289,7 +289,7 @@
       "members": [
         {
           "type": "STRING",
-          "value": "{if"
+          "value": "<!--{if"
         },
         {
           "type": "FIELD",
@@ -306,7 +306,7 @@
         },
         {
           "type": "STRING",
-          "value": "}"
+          "value": "}-->"
         },
         {
           "type": "FIELD",
@@ -353,7 +353,7 @@
         },
         {
           "type": "STRING",
-          "value": "{/if}"
+          "value": "<!--{/if}-->"
         }
       ]
     },
@@ -362,7 +362,7 @@
       "members": [
         {
           "type": "STRING",
-          "value": "{elseif"
+          "value": "<!--{elseif"
         },
         {
           "type": "FIELD",
@@ -379,7 +379,7 @@
         },
         {
           "type": "STRING",
-          "value": "}"
+          "value": "}-->"
         },
         {
           "type": "FIELD",
@@ -404,7 +404,7 @@
       "members": [
         {
           "type": "STRING",
-          "value": "{else}"
+          "value": "<!--{else}-->"
         },
         {
           "type": "FIELD",
@@ -483,17 +483,84 @@
         }
       ]
     },
-    "parameter": {
+    "attribute_name": {
       "type": "PATTERN",
-      "value": "[^\\s=]+[\\s]*=[\\s]*('[^']*'|\"[^\"]*\"|\\[[^]]*])"
+      "value": "[^\\s=]+"
+    },
+    "attribute_value": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "string_double"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "string_single"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "array_value"
+        }
+      ]
+    },
+    "string_single": {
+      "type": "PATTERN",
+      "value": "'[^']*'"
+    },
+    "string_double": {
+      "type": "PATTERN",
+      "value": "\"[^\"]*\""
+    },
+    "array_value": {
+      "type": "PATTERN",
+      "value": "\\[[^\\]]*\\]"
+    },
+    "variable": {
+      "type": "PATTERN",
+      "value": "\\$[^\\s=]+"
+    },
+    "parameter": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "FIELD",
+          "name": "name",
+          "content": {
+            "type": "SYMBOL",
+            "name": "attribute_name"
+          }
+        },
+        {
+          "type": "STRING",
+          "value": "="
+        },
+        {
+          "type": "FIELD",
+          "name": "value",
+          "content": {
+            "type": "SYMBOL",
+            "name": "attribute_value"
+          }
+        }
+      ]
     },
     "text": {
-      "type": "PREC",
-      "value": -1,
-      "content": {
-        "type": "PATTERN",
-        "value": "[^\\s\\|{*}-]([^\\|{*}]*[^\\|{*}-])?"
-      }
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "PATTERN",
+          "value": "[^<{]+"
+        },
+        {
+          "type": "PATTERN",
+          "value": "<"
+        },
+        {
+          "type": "PATTERN",
+          "value": "\\{"
+        }
+      ]
     }
   },
   "extras": [

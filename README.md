@@ -15,4 +15,15 @@ parsers.smarty = {
 }
 ```
 
+## Develop
+1. Edit `grammar.js`.
+2. Run below command.
+```shell
+npx tree-sitter generate
+```
+
+3. Test (you need `test.tpl`)
+```shell
+npx tree-sitter parse test.tpl
+```
 Then follow [adding queries](https://github.com/nvim-treesitter/nvim-treesitter#adding-queries).
