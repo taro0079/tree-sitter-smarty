@@ -116,7 +116,7 @@
         "required": true,
         "types": [
           {
-            "type": "text",
+            "type": "php",
             "named": true
           }
         ]
@@ -207,7 +207,7 @@
         "required": true,
         "types": [
           {
-            "type": "text",
+            "type": "php",
             "named": true
           }
         ]
@@ -354,11 +354,19 @@
     "named": false
   },
   {
+    "type": "*}-->",
+    "named": false
+  },
+  {
     "type": ":",
     "named": false
   },
   {
     "type": "<!--{",
+    "named": false
+  },
+  {
+    "type": "<!--{*",
     "named": false
   },
   {
@@ -383,10 +391,6 @@
   },
   {
     "type": "<!--{if",
-    "named": false
-  },
-  {
-    "type": "=",
     "named": false
   },
   {

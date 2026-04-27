@@ -1,7 +1,7 @@
 module.exports = grammar({
   name: "smarty",
 
-  extras: ($) => [$.comment, /\s+/],
+  extras: ($) => [$.comment],
 
   rules: {
     template: ($) => repeat($._smarty),
@@ -15,13 +15,16 @@ module.exports = grammar({
         $.foreach,
         $.if,
         $.nocache,
-        // $.literal,
       ),
 
     _nested: ($) =>
       choice($.inline, $.include, $.text, $.foreach, $.if, $.nocache),
 
-    comment: ($) => seq("{*", /[^*]*/, "*}"),
+    comment: ($) =>
+      choice(
+        seq("{*", /[^*]*/, "*}"),
+        seq("<!--{*", /[^*]*/, "*}-->"),
+      ),
 
     inline: ($) =>
       seq(
@@ -31,12 +34,19 @@ module.exports = grammar({
         "}-->",
       ),
 
-    include: ($) => seq("{include", repeat($.parameter), "}"),
+    include: ($) =>
+      seq(
+        "{include",
+        repeat(seq(/\s+/, $.parameter)),
+        optional(/\s+/),
+        "}",
+      ),
 
     block: ($) =>
       seq(
         "{block",
-        repeat($.parameter),
+        repeat(seq(/\s+/, $.parameter)),
+        optional(/\s+/),
         "}",
         alias(repeat($._nested), $.body),
         "{/block}",
@@ -57,7 +67,7 @@ module.exports = grammar({
     if: ($) =>
       seq(
         "<!--{if",
-        field("condition", alias(/[^}]+/, $.text)),
+        field("condition", alias(/[^}]+/, $.php)),
         "}-->",
         field("body", alias(repeat($._nested), $.body)),
         repeat(field("alternative", $.else_if)),
@@ -68,7 +78,7 @@ module.exports = grammar({
     else_if: ($) =>
       seq(
         "<!--{elseif",
-        field("condition", alias(/[^}]+/, $.text)),
+        field("condition", alias(/[^}]+/, $.php)),
         "}-->",
         field("body", alias(repeat($._nested), $.body)),
       ),
@@ -82,12 +92,6 @@ module.exports = grammar({
         field("body", alias(repeat($._nested), $.body)),
         "{/nocache}",
       ),
-
-    // literal: $ => seq(
-    //   '{literal}',
-    //   field('body', alias(repeat($._smarty), $.text)),
-    //   '{/literal}',
-    // ),
 
     modifier: ($) =>
       seq(/[^|:}]+/, repeat(seq(":", alias(/[^|:}]+/, $.parameter)))),
@@ -104,12 +108,10 @@ module.exports = grammar({
     parameter: ($) =>
       seq(
         field("name", $.attribute_name),
-        "=",
+        /\s*=\s*/,
         field("value", $.attribute_value),
       ),
-    // parameter: $ => /[^\s=]+[\s]*=[\s]*('[^']*'|"[^"]*"|\[[^]]*])/,
 
-    // text: ($) => prec(-1, /[^\s\|{*}-]([^\|{*}]*[^\|{*}-])?/),
     text: ($) => choice(/[^<{]+/, /</, /\{/),
   },
 });

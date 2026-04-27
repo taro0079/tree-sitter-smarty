@@ -1,32 +1,33 @@
-===================================
+================================================================================
 Test
-===================================
+================================================================================
 Text
-{$test|implode:'.':true|print_r} Test
+<!--{$test|implode:'.':true|print_r}--> Test
 {* comment *}
+<!--{* html comment *}-->
 {block name='test'}
   Test
-  {$test}
+  <!--{$test}-->
 {/block}
-{include test=true file='test' string=    'halllo'}
+{include name='hello' file='test' string=    'halllo'}
 Text
-{foreach $test as $key => $value}
-  {$key}:{$value}
+<!--{foreach $test as $key => $value}-->
+  <!--{$key}-->:<!--{$value}-->
 {foreachelse}
   no results
-  {$hallo}
-{/foreach}
-{if true}
-  {$hallo}
+  <!--{$hallo}-->
+<!--{/foreach}-->
+<!--{if true}-->
+  <!--{$hallo}-->
   Test
-{elseif $test}
+<!--{elseif $test}-->
   Hier steht was
-{else}
-  {if false}
+<!--{else}-->
+  <!--{if false}-->
     Hi
-  {/if}
-{/if}
----
+  <!--{/if}-->
+<!--{/if}-->
+--------------------------------------------------------------------------------
 
 (template
   (text)
@@ -34,61 +35,71 @@ Text
     (php)
     (modifier
       (parameter)
-      (parameter)
-    )
-    (modifier)
-  )
+      (parameter))
+    (modifier))
   (text)
-  (comment
-    (text)
-  )
+  (comment)
+  (text)
+  (comment)
+  (text)
   (block
-    (parameter)
+    (parameter
+      name: (attribute_name)
+      value: (attribute_value
+        (string_single)))
     (body
       (text)
-      (inline (php))
-    )
-  )
+      (inline
+        (php))
+      (text)))
+  (text)
   (include
-    (parameter)
-    (parameter)
-    (parameter)
-  )
+    (parameter
+      name: (attribute_name)
+      value: (attribute_value
+        (string_single)))
+    (parameter
+      name: (attribute_name)
+      value: (attribute_value
+        (string_single)))
+    (parameter
+      name: (attribute_name)
+      value: (attribute_value
+        (string_single))))
   (text)
   (foreach
+    parameters: (php)
     body: (body
-      (inline (php))
       (text)
-      (inline (php))
-    )
+      (inline
+        (php))
+      (text)
+      (inline
+        (php))
+      (text))
     alternative: (foreach_else
       (body
         (text)
-        (inline (php))
-      )
-    )
-  )
+        (inline
+          (php))
+        (text))))
+  (text)
   (if
-    condition: (text)
+    condition: (php)
     body: (body
-      (inline (php))
       (text)
-    )
+      (inline
+        (php))
+      (text))
     alternative: (else_if
-      condition: (text)
+      condition: (php)
       body: (body
-        (text)
-      )
-    )
+        (text)))
     alternative: (else
       body: (body
+        (text)
         (if
-          condition: (text)
+          condition: (php)
           body: (body
-            (text)
-          )
-        )
-      )
-    )
-  )
-)
+            (text)))
+        (text)))))

@@ -12,8 +12,8 @@
 ] @indent.branch
 
 [
- "{/if}"
- "{/foreach}"
+ "<!--{/if}-->"
+ "<!--{/foreach}-->"
  "{/block}"
  "{/nocache}"
 ] @indent.end
