@@ -19,6 +19,7 @@
 
 (if condition: (php) @string)
 (else_if condition: (php) @string)
+(foreach parameters: (php) @string)
 
 (inline (php) @string)
 
